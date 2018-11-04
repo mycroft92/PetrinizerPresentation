@@ -1,0 +1,11 @@
+*.aux
+*.fdb
+*.toc
+*.log
+*.out
+*.pdf
+*.snm
+*.f*
+*.nav
+*.gz
+__latexindent_temp.tex
