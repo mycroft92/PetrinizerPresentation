@@ -12,6 +12,22 @@
 
 \documentclass{beamer}
 \usepackage{flexisym}
+\usepackage{mathtools}
+\usepackage{xcolor}
+
+\usepackage[ruled,noend]{algorithm2e}
+%\usepackage{algpseudocode}
+%\usepackage{algorithm}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[font=small,labelfont=bf,tableposition=bottom]{caption}
+ %\usepackage[font=footnotesize]{subcaption}
+% \usepackage{algorithmic}
+
+
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{tikz}
 
 % There are many different themes available for Beamer. A comprehensive
 % list with examples is given here:
@@ -50,7 +66,7 @@
 % A subtitle is optional and this may be deleted
 \subtitle{}
 
-\author{J. Esparza, Ledesma-Garza R., Majumjumdar R., Meyer P., Niksic F.}
+\author{J. Esparza, R. Ledesma-Garza, R.  Majumjumdar, P. Meyer, F. Niksic }
 % - Give the names in the same order as the appear in the paper.
 % - Use the \inst{?} command only if the authors have different
 %   affiliation.
@@ -110,15 +126,15 @@
 
 \subsection{Petri Nets} %and Vector Addition Systems}
 
-\begin{frame}{Petri Nets}{Optional Subtitle}
+\begin{frame}{Petri Nets}
   Recall:
   \begin{itemize}
-  \item \textbf{Petri Net} is a tuple \textit{(P,T,F,$m_0$)}
+  \item \textbf{Petri Nets} is a tuple \textit{N = (P,T,F,$m_0$)}
     \begin{itemize}
        \item \textit{P} - set of places 
        \item \textit{T} - (disjoint) set of transitions
        \item \textit{F} : $(PxT)\cup(TxP) \rightarrow  {0,1} $ Flow function
-       \item $m_0$      : $P \rightarrow  \mathbb{N} $- initial marking
+       \item $m_0$    : $P \rightarrow  \mathbb{N} $ - initial marking
        \item $m$        : $P \rightarrow \mathbb{N} $ - marking function
      \end{itemize}
   \item Notations
@@ -126,114 +142,916 @@
       \item ${}^\bullet x = \{y \in P \cup T | F(y,x) = 1\}$
       \item $x^\bullet = \{y \in P \cup T | F(x,y) = 1\}$
       \item $m$ represents $ (m(p_1),m(p_2),...,m(p_n) )$
-      \item For a subset $P\textprime \subseteq P$, $m(P\textprime) = \sum_{p\in P\textprime} m(P) $
+      \item For a subset $P\textprime \subseteq P$, $m(P\textprime) = \sum_{p\in P\textprime} m(p) $
 
     \end{itemize}
+  \item $m\textprime(p) = m(p) + F(t,p) - F(p,t)$, for an enabled transition t at m
   \end{itemize}
 \end{frame}
 
-\subsection{Second Subsection}
+
+\begin{frame}{Lamport's mutex algo}
+%\noindent\begin{minipage}{\textwidth}
+%  \centering
+\begin{minipage}[t]{5cm}
+  \vspace{0pt}  
+  \floatname{algorithm}{Procedure}
+  \begin{algorithm}[H]
+    \caption{process 1}
+    \DontPrintSemicolon
+    $bit1 :=  false$ \;
+    \While{$true$}{
+      $bit1:= true$     :p1 \;
+            \While(:p2){$bit2$}{$skip$}
+            $(* critical$ $ section*)$ :p3  \; 
+            $bit1:= false$  \;
+    }
+  \end{algorithm}
+\end{minipage}%
+\begin{minipage}[t]{5cm}
+  \vspace{0pt}
+  \begin{algorithm}[H]
+    \DontPrintSemicolon
+    \caption{process 2}
+
+     $bit2 := $ $ false$ \;
+          \While{$true$}{
+              $bit2:= true$    :q1 \;
+              \If(:q2){$bit1$}{
+              $bit2=false$     :q3  \;
+              \While{$bit1$}{
+                  $skip$    :q4 \;
+              }
+              $GOTO$ $q1$\;
+            
+           }
+
+            $(* critical$ $ section*)$   :q5 \;
+            $bit2:= false$       \;
+          }
+
+  \end{algorithm}
+  
+\end{minipage}
+
+%\end{minipage}
+
+\end{frame}
+
+\begin{frame}{Lamport's mutex algo}
+\begin{tabular}{cc}
+\raisebox{2.5cm}{\noindent\begin{minipage}{.4\textwidth}
+  \centering
+  \floatname{algorithm}{Procedure}
+  \begin{algorithm}[H]
+    \caption{process 1}
+    \DontPrintSemicolon
+    $bit1 :=  false$ \;
+    \While{$true$}{
+      $bit1:= true$     :p1 \;
+            \While(:p2){$bit2$}{$skip$}
+            $(* critical$ $ section*)$  :p3  \; 
+            $bit1:= false$ \;
+    }
+  \end{algorithm}
+\end{minipage}} &
+
+\begin{minipage}[t]{.45\textwidth}
+\centering
+
+\tikzset{every picture/.style={line width=0.45pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.45pt,y=0.45pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,396); %set diagram left start at 0, and has height of 396
+
+%Shape: Circle [id:dp32896215251942906] 
+\draw   (176,43) .. controls (176,36.37) and (181.37,31) .. (188,31) .. controls (194.63,31) and (200,36.37) .. (200,43) .. controls (200,49.63) and (194.63,55) .. (188,55) .. controls (181.37,55) and (176,49.63) .. (176,43) -- cycle ;
+%Shape: Square [id:dp00845483728272578] 
+\draw   (178,78) -- (198,78) -- (198,98) -- (178,98) -- cycle ;
+%Shape: Circle [id:dp9191853255920062] 
+\draw   (176,133) .. controls (176,126.37) and (181.37,121) .. (188,121) .. controls (194.63,121) and (200,126.37) .. (200,133) .. controls (200,139.63) and (194.63,145) .. (188,145) .. controls (181.37,145) and (176,139.63) .. (176,133) -- cycle ;
+%Shape: Square [id:dp13742433409360277] 
+\draw   (178,168) -- (198,168) -- (198,188) -- (178,188) -- cycle ;
+%Shape: Square [id:dp5485670615550842] 
+\draw   (178,256) -- (196,256) -- (196,274) -- (178,274) -- cycle ;
+%Shape: Circle [id:dp37301943468962906] 
+\draw   (175,222) .. controls (175,215.37) and (180.37,210) .. (187,210) .. controls (193.63,210) and (199,215.37) .. (199,222) .. controls (199,228.63) and (193.63,234) .. (187,234) .. controls (180.37,234) and (175,228.63) .. (175,222) -- cycle ;
+%Shape: Circle [id:dp8511997150774411] 
+\draw   (251,90) .. controls (251,83.37) and (256.37,78) .. (263,78) .. controls (269.63,78) and (275,83.37) .. (275,90) .. controls (275,96.63) and (269.63,102) .. (263,102) .. controls (256.37,102) and (251,96.63) .. (251,90) -- cycle ;
+%Shape: Circle [id:dp040057954795090556] 
+\draw   (249,176) .. controls (249,169.37) and (254.37,164) .. (261,164) .. controls (267.63,164) and (273,169.37) .. (273,176) .. controls (273,182.63) and (267.63,188) .. (261,188) .. controls (254.37,188) and (249,182.63) .. (249,176) -- cycle ;
+%Shape: Circle [id:dp9848698643489989] 
+\draw   (256,265) .. controls (256,258.37) and (261.37,253) .. (268,253) .. controls (274.63,253) and (280,258.37) .. (280,265) .. controls (280,271.63) and (274.63,277) .. (268,277) .. controls (261.37,277) and (256,271.63) .. (256,265) -- cycle ;
+%Straight Lines [id:da6160023158736354] 
+\draw    (91,42) -- (92,269) ;
+
+
+%Curve Lines [id:da39491355400057904] 
+\draw    (92,269) .. controls (93,317) and (184,316) .. (188,275) ;
+
+
+%Curve Lines [id:da9582557401518279] 
+\draw    (91,42) .. controls (93.94,-1.12) and (186.2,2.82) .. (188,29.35) ;
+\draw [shift={(188,31)}, rotate = 274.09000000000003] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da9340622989907993] 
+\draw    (188,55) -- (187.08,77) ;
+\draw [shift={(187,79)}, rotate = 272.39] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da049760241955234874] 
+\draw    (188,98) -- (188,119) ;
+\draw [shift={(188,121)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da11916172738575703] 
+\draw    (188,145) -- (188.92,167) ;
+\draw [shift={(189,169)}, rotate = 267.61] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da8774274712366626] 
+\draw    (187,187) -- (187,208) ;
+\draw [shift={(187,210)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da8804303791070772] 
+\draw    (187,234) -- (187.92,256) ;
+\draw [shift={(188,258)}, rotate = 267.61] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da6976772960162104] 
+\draw    (201,265) -- (254,265) ;
+\draw [shift={(256,265)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+\draw [shift={(199,265)}, rotate = 0] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+%Straight Lines [id:da7846493546133954] 
+\draw    (249,176) -- (200,177.92) ;
+\draw [shift={(198,178)}, rotate = 357.75] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da7948424238039193] 
+\draw    (251,90) -- (201,90) ;
+\draw [shift={(199,90)}, rotate = 360] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da907805570718668] 
+\draw    (189,169) -- (254.61,101.43) ;
+\draw [shift={(256,100)}, rotate = 494.16] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da03488454302285693] 
+\draw    (188,98) -- (247.77,174.42) ;
+\draw [shift={(249,176)}, rotate = 231.97] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Flowchart: Connector [id:dp9105002467098443] 
+\draw  [draw opacity=0] (261,172.5) .. controls (261,170.57) and (262.01,169) .. (263.25,169) .. controls (264.49,169) and (265.5,170.57) .. (265.5,172.5) .. controls (265.5,174.43) and (264.49,176) .. (263.25,176) .. controls (262.01,176) and (261,174.43) .. (261,172.5) -- cycle ;
+%Flowchart: Connector [id:dp2982676424673574] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (257,176) .. controls (257,174.07) and (258.79,172.5) .. (261,172.5) .. controls (263.21,172.5) and (265,174.07) .. (265,176) .. controls (265,177.93) and (263.21,179.5) .. (261,179.5) .. controls (258.79,179.5) and (257,177.93) .. (257,176) -- cycle ;
+%Flowchart: Connector [id:dp955718872119058] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (185.5,130.38) .. controls (185.5,128.93) and (186.62,127.75) .. (188,127.75) .. controls (189.38,127.75) and (190.5,128.93) .. (190.5,130.38) .. controls (190.5,131.82) and (189.38,133) .. (188,133) .. controls (186.62,133) and (185.5,131.82) .. (185.5,130.38) -- cycle ;
+
+% Text Node
+\draw (152,44) node  [align=left] {p3};
+% Text Node
+\draw (153,132) node  [align=left] {p1};
+% Text Node
+\draw (148,222) node  [align=left] {p2};
+% Text Node
+\draw (150,178) node  [align=left] {s1};
+% Text Node
+\draw (150,80) node  [align=left] {s3};
+% Text Node
+\draw (148,271) node  [align=left] {p2};
+% Text Node
+\draw (258,69) node  [align=left] {bit1};
+% Text Node
+\draw (263,158) node  [align=left] {notbit1};
+% Text Node
+\draw (269,244) node  [align=left] {notbit2};
+
+
+\end{tikzpicture}
+\end{minipage}
+\end{tabular}
+
+\end{frame}
+
+\begin{frame}{Lamport's Mutex algo}
+  \begin{tabular}{cc}
+    \raisebox{2.5cm}{
+      \noindent\begin{minipage}[t]{0.45\textwidth}
+  \begin{algorithm}[H]
+    \DontPrintSemicolon
+    \caption{process 2}
+
+     $bit2 := $ $ false$ \;
+          \While{$true$}{
+              $bit2:= true$    :q1 \;
+              \If(:q2){$bit1$}{
+              $bit2=false$     :q3  \;
+              \While{$bit1$}{
+                  $skip$    :q4 \;
+              }
+              $GOTO$ $q1$\;
+            
+           }
+
+            $(* critical$ $ section*)$ :q5  \;
+            $bit2:= false$       \;
+          }
+
+  \end{algorithm}
+  
+\end{minipage}
+    } &{
+      \begin{minipage}[t]{0.45\textwidth}
+        
+
+\tikzset{every picture/.style={line width=0.45pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.45pt,y=0.45pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,396); %set diagram left start at 0, and has height of 396
+
+%Shape: Circle [id:dp8511997150774411] 
+\draw   (251,90) .. controls (251,83.37) and (256.37,78) .. (263,78) .. controls (269.63,78) and (275,83.37) .. (275,90) .. controls (275,96.63) and (269.63,102) .. (263,102) .. controls (256.37,102) and (251,96.63) .. (251,90) -- cycle ;
+%Shape: Circle [id:dp040057954795090556] 
+\draw   (249,176) .. controls (249,169.37) and (254.37,164) .. (261,164) .. controls (267.63,164) and (273,169.37) .. (273,176) .. controls (273,182.63) and (267.63,188) .. (261,188) .. controls (254.37,188) and (249,182.63) .. (249,176) -- cycle ;
+%Shape: Circle [id:dp9848698643489989] 
+\draw   (256,265) .. controls (256,258.37) and (261.37,253) .. (268,253) .. controls (274.63,253) and (280,258.37) .. (280,265) .. controls (280,271.63) and (274.63,277) .. (268,277) .. controls (261.37,277) and (256,271.63) .. (256,265) -- cycle ;
+%Flowchart: Connector [id:dp9105002467098443] 
+\draw  [draw opacity=0] (261,172.5) .. controls (261,170.57) and (262.01,169) .. (263.25,169) .. controls (264.49,169) and (265.5,170.57) .. (265.5,172.5) .. controls (265.5,174.43) and (264.49,176) .. (263.25,176) .. controls (262.01,176) and (261,174.43) .. (261,172.5) -- cycle ;
+%Flowchart: Connector [id:dp2982676424673574] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (257,176) .. controls (257,174.07) and (258.79,172.5) .. (261,172.5) .. controls (263.21,172.5) and (265,174.07) .. (265,176) .. controls (265,177.93) and (263.21,179.5) .. (261,179.5) .. controls (258.79,179.5) and (257,177.93) .. (257,176) -- cycle ;
+%Shape: Square [id:dp1623601595927875] 
+\draw   (329,32) -- (349,32) -- (349,52) -- (329,52) -- cycle ;
+%Shape: Square [id:dp36288388749046907] 
+\draw   (329,118) -- (349,118) -- (349,138) -- (329,138) -- cycle ;
+%Shape: Square [id:dp7676298289762359] 
+\draw   (331,211) -- (351,211) -- (351,231) -- (331,231) -- cycle ;
+%Shape: Square [id:dp9424288612359866] 
+\draw   (412,255) -- (432,255) -- (432,275) -- (412,275) -- cycle ;
+%Shape: Circle [id:dp8028244234834581] 
+\draw   (410,223) .. controls (410,216.92) and (414.92,212) .. (421,212) .. controls (427.08,212) and (432,216.92) .. (432,223) .. controls (432,229.08) and (427.08,234) .. (421,234) .. controls (414.92,234) and (410,229.08) .. (410,223) -- cycle ;
+%Shape: Circle [id:dp7722371301307209] 
+\draw   (326,178) .. controls (326,171.92) and (330.92,167) .. (337,167) .. controls (343.08,167) and (348,171.92) .. (348,178) .. controls (348,184.08) and (343.08,189) .. (337,189) .. controls (330.92,189) and (326,184.08) .. (326,178) -- cycle ;
+%Shape: Circle [id:dp4578053318030826] 
+\draw   (329,86) .. controls (329,80.48) and (333.48,76) .. (339,76) .. controls (344.52,76) and (349,80.48) .. (349,86) .. controls (349,91.52) and (344.52,96) .. (339,96) .. controls (333.48,96) and (329,91.52) .. (329,86) -- cycle ;
+%Shape: Circle [id:dp2286740257470148] 
+\draw   (408,132) .. controls (408,125.92) and (412.92,121) .. (419,121) .. controls (425.08,121) and (430,125.92) .. (430,132) .. controls (430,138.08) and (425.08,143) .. (419,143) .. controls (412.92,143) and (408,138.08) .. (408,132) -- cycle ;
+%Shape: Circle [id:dp48361072793315163] 
+\draw   (410,40.5) .. controls (410,34.7) and (414.7,30) .. (420.5,30) .. controls (426.3,30) and (431,34.7) .. (431,40.5) .. controls (431,46.3) and (426.3,51) .. (420.5,51) .. controls (414.7,51) and (410,46.3) .. (410,40.5) -- cycle ;
+%Shape: Square [id:dp5099925001843321] 
+\draw   (409,77) -- (429,77) -- (429,97) -- (409,97) -- cycle ;
+%Shape: Square [id:dp9035206174398847] 
+\draw   (410,172) -- (430,172) -- (430,192) -- (410,192) -- cycle ;
+%Straight Lines [id:da9769503579465348] 
+\draw    (273.72,84.98) -- (327.28,53.02) ;
+\draw [shift={(329,52)}, rotate = 509.18] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+\draw [shift={(272,86)}, rotate = 329.18] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+%Straight Lines [id:da8600276812954522] 
+\draw    (504,47) -- (505,274) ;
+
+
+%Curve Lines [id:da028152988203396845] 
+\draw    (505,274) .. controls (506,322) and (419,319) .. (423,278) ;
+
+
+%Curve Lines [id:da2655529828278965] 
+\draw    (504,47) .. controls (506.94,3.88) and (425.84,2.06) .. (420.72,28.35) ;
+\draw [shift={(420.5,30)}, rotate = 274.09000000000003] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da42206262362902747] 
+\draw    (339,53) -- (339,74) ;
+\draw [shift={(339,76)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da45874258560207426] 
+\draw    (339,96) -- (339,117) ;
+\draw [shift={(339,119)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da48736132580249025] 
+\draw    (337,139) -- (337,165) ;
+\draw [shift={(337,167)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da5521708431601479] 
+\draw    (337,189) -- (337,210) ;
+\draw [shift={(337,212)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da4302775469469212] 
+\draw    (408,223) -- (351,223) ;
+
+\draw [shift={(410,223)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+%Straight Lines [id:da27087381786723885] 
+\draw    (410,40.5) -- (350,40.98) ;
+\draw [shift={(348,41)}, rotate = 359.53999999999996] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da025811570458729505] 
+\draw    (420.5,51) -- (420.5,72) ;
+\draw [shift={(420.5,74)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da05456137708253794] 
+\draw    (419,98) -- (419,119) ;
+\draw [shift={(419,121)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da05696582631392011] 
+\draw    (419,143) -- (419,167) ;
+\draw [shift={(419,169)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da5699579180714595] 
+\draw    (421,189) -- (421,210) ;
+\draw [shift={(421,212)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da07994079239465623] 
+\draw    (421,234) -- (421,255) ;
+\draw [shift={(421,257)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Flowchart: Connector [id:dp12044789082378582] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (264,261.5) .. controls (264,259.57) and (265.79,258) .. (268,258) .. controls (270.21,258) and (272,259.57) .. (272,261.5) .. controls (272,263.43) and (270.21,265) .. (268,265) .. controls (265.79,265) and (264,263.43) .. (264,261.5) -- cycle ;
+%Flowchart: Connector [id:dp8311870908627425] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (417,226.5) .. controls (417,224.57) and (418.79,223) .. (421,223) .. controls (423.21,223) and (425,224.57) .. (425,226.5) .. controls (425,228.43) and (423.21,230) .. (421,230) .. controls (418.79,230) and (417,228.43) .. (417,226.5) -- cycle ;
+%Curve Lines [id:da36463937924616874] 
+\draw    (271.95,165.11) .. controls (293.28,124.52) and (378.87,82.79) .. (406.39,86.7) ;
+\draw [shift={(408,87)}, rotate = 192.99] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+\draw [shift={(271,167)}, rotate = 295.46] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+%Straight Lines [id:da1463454263805002] 
+\draw    (412,265.99) -- (280,265) ;
+
+\draw [shift={(414,266)}, rotate = 180.43] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+%Curve Lines [id:da05739923087744636] 
+\draw    (268.44,250.88) .. controls (276.84,224.08) and (389.53,225.15) .. (410,192) ;
+
+\draw [shift={(268,253)}, rotate = 275.91] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+%Straight Lines [id:da8857932684845543] 
+\draw    (337,139) -- (269.04,251.29) ;
+\draw [shift={(268,253)}, rotate = 301.18] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+
+% Text Node
+\draw (258,69) node  [align=left] {bit1};
+% Text Node
+\draw (264,198) node  [align=left] {notbit1};
+% Text Node
+\draw (267,290) node  [align=left] {notbit2};
+% Text Node
+\draw (452,40) node  [align=left] {q2};
+% Text Node
+\draw (454,138) node  [align=left] {q5};
+% Text Node
+\draw (457,220) node  [align=left] {q1};
+% Text Node
+\draw (365,86) node  [align=left] {q3};
+% Text Node
+\draw (367,180) node  [align=left] {q4};
+% Text Node
+\draw (341,22) node  [align=left] {t2};
+% Text Node
+\draw (366,129) node  [align=left] {t3};
+% Text Node
+\draw (352,243) node  [align=left] {t4};
+% Text Node
+\draw (451,83) node  [align=left] {t5};
+% Text Node
+\draw (456,182) node  [align=left] {t6};
+% Text Node
+\draw (454,264) node  [align=left] {t1};
+
+
+\end{tikzpicture}
+      \end{minipage}
+      }
+  \end{tabular}
+\end{frame}
+    
+\begin{frame}{Lamport's Algo as Petri Net}
+
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.65pt,y=0.65pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,396); %set diagram left start at 0, and has height of 396
+
+%Shape: Circle [id:dp32896215251942906] 
+\draw   (176,43) .. controls (176,36.37) and (181.37,31) .. (188,31) .. controls (194.63,31) and (200,36.37) .. (200,43) .. controls (200,49.63) and (194.63,55) .. (188,55) .. controls (181.37,55) and (176,49.63) .. (176,43) -- cycle ;
+%Shape: Square [id:dp00845483728272578] 
+\draw   (178,78) -- (198,78) -- (198,98) -- (178,98) -- cycle ;
+%Shape: Circle [id:dp9191853255920062] 
+\draw   (176,133) .. controls (176,126.37) and (181.37,121) .. (188,121) .. controls (194.63,121) and (200,126.37) .. (200,133) .. controls (200,139.63) and (194.63,145) .. (188,145) .. controls (181.37,145) and (176,139.63) .. (176,133) -- cycle ;
+%Shape: Square [id:dp13742433409360277] 
+\draw   (178,168) -- (198,168) -- (198,188) -- (178,188) -- cycle ;
+%Shape: Square [id:dp5485670615550842] 
+\draw   (178,256) -- (196,256) -- (196,274) -- (178,274) -- cycle ;
+%Shape: Circle [id:dp37301943468962906] 
+\draw   (175,222) .. controls (175,215.37) and (180.37,210) .. (187,210) .. controls (193.63,210) and (199,215.37) .. (199,222) .. controls (199,228.63) and (193.63,234) .. (187,234) .. controls (180.37,234) and (175,228.63) .. (175,222) -- cycle ;
+%Shape: Circle [id:dp8511997150774411] 
+\draw   (251,90) .. controls (251,83.37) and (256.37,78) .. (263,78) .. controls (269.63,78) and (275,83.37) .. (275,90) .. controls (275,96.63) and (269.63,102) .. (263,102) .. controls (256.37,102) and (251,96.63) .. (251,90) -- cycle ;
+%Shape: Circle [id:dp040057954795090556] 
+\draw   (249,176) .. controls (249,169.37) and (254.37,164) .. (261,164) .. controls (267.63,164) and (273,169.37) .. (273,176) .. controls (273,182.63) and (267.63,188) .. (261,188) .. controls (254.37,188) and (249,182.63) .. (249,176) -- cycle ;
+%Shape: Circle [id:dp9848698643489989] 
+\draw   (256,265) .. controls (256,258.37) and (261.37,253) .. (268,253) .. controls (274.63,253) and (280,258.37) .. (280,265) .. controls (280,271.63) and (274.63,277) .. (268,277) .. controls (261.37,277) and (256,271.63) .. (256,265) -- cycle ;
+%Straight Lines [id:da6160023158736354] 
+\draw    (91,42) -- (92,269) ;
+
+
+%Curve Lines [id:da39491355400057904] 
+\draw    (92,269) .. controls (93,317) and (184,316) .. (188,275) ;
+
+
+%Curve Lines [id:da9582557401518279] 
+\draw    (91,42) .. controls (93.94,-1.12) and (186.2,2.82) .. (188,29.35) ;
+\draw [shift={(188,31)}, rotate = 274.09000000000003] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da9340622989907993] 
+\draw    (188,55) -- (187.08,77) ;
+\draw [shift={(187,79)}, rotate = 272.39] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da049760241955234874] 
+\draw    (188,98) -- (188,119) ;
+\draw [shift={(188,121)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da11916172738575703] 
+\draw    (188,145) -- (188.92,167) ;
+\draw [shift={(189,169)}, rotate = 267.61] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da8774274712366626] 
+\draw    (187,187) -- (187,208) ;
+\draw [shift={(187,210)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da8804303791070772] 
+\draw    (187,234) -- (187.92,256) ;
+\draw [shift={(188,258)}, rotate = 267.61] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da6976772960162104] 
+\draw    (201,265) -- (254,265) ;
+\draw [shift={(256,265)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+\draw [shift={(199,265)}, rotate = 0] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+%Straight Lines [id:da7846493546133954] 
+\draw    (249,176) -- (200,177.92) ;
+\draw [shift={(198,178)}, rotate = 357.75] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da7948424238039193] 
+\draw    (251,90) -- (201,90) ;
+\draw [shift={(199,90)}, rotate = 360] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da907805570718668] 
+\draw    (189,169) -- (254.61,101.43) ;
+\draw [shift={(256,100)}, rotate = 494.16] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da03488454302285693] 
+\draw    (188,98) -- (247.77,174.42) ;
+\draw [shift={(249,176)}, rotate = 231.97] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Flowchart: Connector [id:dp9105002467098443] 
+\draw  [draw opacity=0] (261,172.5) .. controls (261,170.57) and (262.01,169) .. (263.25,169) .. controls (264.49,169) and (265.5,170.57) .. (265.5,172.5) .. controls (265.5,174.43) and (264.49,176) .. (263.25,176) .. controls (262.01,176) and (261,174.43) .. (261,172.5) -- cycle ;
+%Flowchart: Connector [id:dp2982676424673574] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (257,176) .. controls (257,174.07) and (258.79,172.5) .. (261,172.5) .. controls (263.21,172.5) and (265,174.07) .. (265,176) .. controls (265,177.93) and (263.21,179.5) .. (261,179.5) .. controls (258.79,179.5) and (257,177.93) .. (257,176) -- cycle ;
+%Flowchart: Connector [id:dp955718872119058] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (185.5,130.38) .. controls (185.5,128.93) and (186.62,127.75) .. (188,127.75) .. controls (189.38,127.75) and (190.5,128.93) .. (190.5,130.38) .. controls (190.5,131.82) and (189.38,133) .. (188,133) .. controls (186.62,133) and (185.5,131.82) .. (185.5,130.38) -- cycle ;
+%Shape: Square [id:dp1623601595927875] 
+\draw   (329,32) -- (349,32) -- (349,52) -- (329,52) -- cycle ;
+%Shape: Square [id:dp36288388749046907] 
+\draw   (329,118) -- (349,118) -- (349,138) -- (329,138) -- cycle ;
+%Shape: Square [id:dp7676298289762359] 
+\draw   (331,211) -- (351,211) -- (351,231) -- (331,231) -- cycle ;
+%Shape: Square [id:dp9424288612359866] 
+\draw   (412,255) -- (432,255) -- (432,275) -- (412,275) -- cycle ;
+%Shape: Circle [id:dp8028244234834581] 
+\draw   (410,223) .. controls (410,216.92) and (414.92,212) .. (421,212) .. controls (427.08,212) and (432,216.92) .. (432,223) .. controls (432,229.08) and (427.08,234) .. (421,234) .. controls (414.92,234) and (410,229.08) .. (410,223) -- cycle ;
+%Shape: Circle [id:dp7722371301307209] 
+\draw   (326,178) .. controls (326,171.92) and (330.92,167) .. (337,167) .. controls (343.08,167) and (348,171.92) .. (348,178) .. controls (348,184.08) and (343.08,189) .. (337,189) .. controls (330.92,189) and (326,184.08) .. (326,178) -- cycle ;
+%Shape: Circle [id:dp4578053318030826] 
+\draw   (329,86) .. controls (329,80.48) and (333.48,76) .. (339,76) .. controls (344.52,76) and (349,80.48) .. (349,86) .. controls (349,91.52) and (344.52,96) .. (339,96) .. controls (333.48,96) and (329,91.52) .. (329,86) -- cycle ;
+%Shape: Circle [id:dp2286740257470148] 
+\draw   (408,132) .. controls (408,125.92) and (412.92,121) .. (419,121) .. controls (425.08,121) and (430,125.92) .. (430,132) .. controls (430,138.08) and (425.08,143) .. (419,143) .. controls (412.92,143) and (408,138.08) .. (408,132) -- cycle ;
+%Shape: Circle [id:dp48361072793315163] 
+\draw   (410,40.5) .. controls (410,34.7) and (414.7,30) .. (420.5,30) .. controls (426.3,30) and (431,34.7) .. (431,40.5) .. controls (431,46.3) and (426.3,51) .. (420.5,51) .. controls (414.7,51) and (410,46.3) .. (410,40.5) -- cycle ;
+%Shape: Square [id:dp5099925001843321] 
+\draw   (409,77) -- (429,77) -- (429,97) -- (409,97) -- cycle ;
+%Shape: Square [id:dp9035206174398847] 
+\draw   (410,172) -- (430,172) -- (430,192) -- (410,192) -- cycle ;
+%Straight Lines [id:da9769503579465348] 
+\draw    (273.72,84.98) -- (327.28,53.02) ;
+\draw [shift={(329,52)}, rotate = 509.18] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+\draw [shift={(272,86)}, rotate = 329.18] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+%Straight Lines [id:da8600276812954522] 
+\draw    (504,47) -- (505,274) ;
+
+
+%Curve Lines [id:da028152988203396845] 
+\draw    (505,274) .. controls (506,322) and (419,319) .. (423,278) ;
+
+
+%Curve Lines [id:da2655529828278965] 
+\draw    (504,47) .. controls (506.94,3.88) and (425.84,2.06) .. (420.72,28.35) ;
+\draw [shift={(420.5,30)}, rotate = 274.09000000000003] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da42206262362902747] 
+\draw    (339,53) -- (339,74) ;
+\draw [shift={(339,76)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da45874258560207426] 
+\draw    (339,96) -- (339,117) ;
+\draw [shift={(339,119)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da48736132580249025] 
+\draw    (337,139) -- (337,165) ;
+\draw [shift={(337,167)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da5521708431601479] 
+\draw    (337,189) -- (337,210) ;
+\draw [shift={(337,212)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da4302775469469212] 
+\draw    (408,223) -- (351,223) ;
+
+\draw [shift={(410,223)}, rotate = 180] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+%Straight Lines [id:da27087381786723885] 
+\draw    (410,40.5) -- (350,40.98) ;
+\draw [shift={(348,41)}, rotate = 359.53999999999996] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da025811570458729505] 
+\draw    (420.5,51) -- (420.5,72) ;
+\draw [shift={(420.5,74)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da05456137708253794] 
+\draw    (419,98) -- (419,119) ;
+\draw [shift={(419,121)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da05696582631392011] 
+\draw    (419,143) -- (419,167) ;
+\draw [shift={(419,169)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da5699579180714595] 
+\draw    (421,189) -- (421,210) ;
+\draw [shift={(421,212)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Straight Lines [id:da07994079239465623] 
+\draw    (421,234) -- (421,255) ;
+\draw [shift={(421,257)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+%Flowchart: Connector [id:dp12044789082378582] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (264,261.5) .. controls (264,259.57) and (265.79,258) .. (268,258) .. controls (270.21,258) and (272,259.57) .. (272,261.5) .. controls (272,263.43) and (270.21,265) .. (268,265) .. controls (265.79,265) and (264,263.43) .. (264,261.5) -- cycle ;
+%Flowchart: Connector [id:dp8311870908627425] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (417,226.5) .. controls (417,224.57) and (418.79,223) .. (421,223) .. controls (423.21,223) and (425,224.57) .. (425,226.5) .. controls (425,228.43) and (423.21,230) .. (421,230) .. controls (418.79,230) and (417,228.43) .. (417,226.5) -- cycle ;
+%Curve Lines [id:da36463937924616874] 
+\draw    (271.95,165.11) .. controls (293.28,124.52) and (378.87,82.79) .. (406.39,86.7) ;
+\draw [shift={(408,87)}, rotate = 192.99] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+\draw [shift={(271,167)}, rotate = 295.46] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+%Straight Lines [id:da1463454263805002] 
+\draw    (412,265.99) -- (280,265) ;
+
+\draw [shift={(414,266)}, rotate = 180.43] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+%Curve Lines [id:da05739923087744636] 
+\draw    (268.44,250.88) .. controls (276.84,224.08) and (389.53,225.15) .. (410,192) ;
+
+\draw [shift={(268,253)}, rotate = 275.91] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+%Straight Lines [id:da8857932684845543] 
+\draw    (337,139) -- (269.04,251.29) ;
+\draw [shift={(268,253)}, rotate = 301.18] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+
+% Text Node
+\draw (152,44) node  [align=left] {p3};
+% Text Node
+\draw (153,132) node  [align=left] {p1};
+% Text Node
+\draw (148,222) node  [align=left] {p2};
+% Text Node
+\draw (150,178) node  [align=left] {s1};
+% Text Node
+\draw (150,80) node  [align=left] {s3};
+% Text Node
+\draw (148,271) node  [align=left] {p2};
+% Text Node
+\draw (258,69) node  [align=left] {bit1};
+% Text Node
+\draw (264,198) node  [align=left] {notbit1};
+% Text Node
+\draw (267,290) node  [align=left] {notbit2};
+% Text Node
+\draw (452,40) node  [align=left] {q2};
+% Text Node
+\draw (454,138) node  [align=left] {q5};
+% Text Node
+\draw (457,220) node  [align=left] {q1};
+% Text Node
+\draw (365,86) node  [align=left] {q3};
+% Text Node
+\draw (367,180) node  [align=left] {q4};
+% Text Node
+\draw (341,22) node  [align=left] {t2};
+% Text Node
+\draw (366,129) node  [align=left] {t3};
+% Text Node
+\draw (352,243) node  [align=left] {t4};
+% Text Node
+\draw (451,83) node  [align=left] {t5};
+% Text Node
+\draw (456,182) node  [align=left] {t6};
+% Text Node
+\draw (454,264) node  [align=left] {t1};
+
+
+\end{tikzpicture}
+\end{frame}
+
+
+\begin{frame}{Petri Nets and Properties}
+  \begin{itemize}
+    \item  $\sigma = t_1t_2....t_r$ is an \textbf{Occurence sequence} on $N$ iff \\
+      $\exists m_1,....,m_r$ such that $m_0\xrightarrow[]{t_1}m_1 \xrightarrow[]{t_2}....\xrightarrow[]{t_r}m_r $
+    \item \textbf{Property $\varphi$} 
+    \begin{itemize}
+      \item is a set of linear arithmetic constraints over free variables \textit{P}.
+      \item holds on $m$ iff $m \models \varphi $
+      \item Satisfied by $N$($N\models \varphi$) iff $\forall m \in Reach(m_0) m\models \varphi$
+      \item is inductive if whenever $m\models \varphi$ and $m\xrightarrow[]{t}m\textprime ,m\textprime\models\varphi$,\\
+       for some $t \in T$
+    \end{itemize}
+    \item More conventions:
+    \begin{itemize}
+      \item $p \geq 3$ implies $m(p) \geq 3$ for current marking$m$ and some place $p \in P$
+      \item $t \leq 2$ implies transition $t \in T$ must fire atmost twice in occurence sequence to $m$
+    \end{itemize}
+    \item Coverability is a property: $\forall p \in P, m(p) \geq k$ for some $k \in \mathbb{N}$
+  \end{itemize}
+\end{frame}
+\subsection{Safety Method}
 
 % You can reveal the parts of a slide one at a time
 % with the \pause command:
-\begin{frame}{Second Slide Title}
+\begin{frame}{Algebraic Methods}
+  \begin{block}{Marking Equation}
+Eqn of Petri Net $N= (P,T,F,m_0)$  is  $M = m_0+CX$
+\end{block}
+  Where \begin{itemize} 
+  \item $M$ is a vector of size $|P|$, representing current marking
+  \item $X$ is a vector of $|T|$, representing occurences of transitions in $\sigma$
+  \item $C$ is the \textit{incidence matrix} of dim: $|P|X|T|$ given by \\
+                    $C(p,t) = F(t,p) - F(p,t)$
+  \end{itemize}
+
+%Additional Constraints 
+% \begin{itemize}
+%   \item Token Conservation: Tokens added to a place $p$, total output transitions - total input transitions.
+%   \item Non-negativity  for markings: $M \geq 0 $
+%   \item Non-negativity for transitions: $X \geq 0$
+%\end{itemize}
+\begin{block}{Marking Constraints}
+ $$ \mathcal{C}(P,T,F,m_0) :: \begin{cases}
+  M = m_0 + CX, \:marking\, equation\\
+  M \geq 0  ,\:non-negativity\,for\,places\\
+  X \geq 0 ,\:non-negativity\,for\,transitions
+ \end{cases}
+ $$
+\end{block}
+
+\end{frame}
+
+\begin{frame}{Safety Method}
+  Sufficient conditions for satisfiabiality of $\varphi$ by $N$
+  \begin{block}{}
+    $$\mathcal{C}(P,T,F,m_0) \land \neg\varphi(M) $$
+  \end{block}
+\begin{example}
+  Lamport's Algo : "if proc1 is at p3, then bit1 = true" is proven by\\ unsatisfiability of 
+    $\mathcal{C}(P,T,F,m_0) \land p3 \geq 1 \land bit1 \neq 1$ 
+\end{example}
   \begin{itemize}
-  \item {
-    First item.
-    \pause % The slide will pause after showing the first item
+  \item Proof by contradiction.
+
+  \item Does not work in other direction(Failure for some $X,M$ doesn't imply satisfiabiality always).
+  \end{itemize}
+\begin{example}
+ Mutual exclusion: $\mathcal{C}(P,T,F,m_0)\land p3 \geq 1 \land q5 \geq 1 $ is satisfiable!
+\end{example}
+
+
+\end{frame}
+
+\section{Refinement Techniques}
+
+\subsection{Traps}
+
+\begin{frame}{Traps}
+\begin{block}{Def. Trap:}
+  A \textit{trap} of $N =(P,T,F,m_0)$ is any subset $Q \subseteq P$ such that 
+    \begin{itemize}
+      \item $\forall t \in T $ if $t$ is an output transition on a place in $Q$, it is also an input transition to some place in $Q$
+      \item Equivalently $Q^\bullet \subseteq {}^\bullet Q$
+    \end{itemize}
+\end{block}
+Behaviours to note:
+\begin{itemize}
+  \item If $m(p) > 0 ,for\, some\, p\in Q$ then for each $\sigma and\, m\textprime$  s.t $ m\xrightarrow{\sigma}m\textprime$, $m\textprime(p\textprime) > 0$ for some $p\textprime \in Q$
+  \item $m\textprime(P)$ can be less than $m(P)$, only criterion is $m\textprime > 0$ for any $\sigma$
+  %\item If $Q_0, Q_1,Q_2,...\subseteq P$ are traps, then so is $\bigcup\limits_{i\in \mathbb{N}} Q_i$. 
+ 
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Encoding Traps}
+Consider $B$ a vector of length $|P|$ boolean variables. $B(p)$ is true iff $p$ is in a trap.
+ \begin{itemize}
+    \item Behaviour on places:
+    \begin{equation}
+     trap(B) ::= \bigwedge\limits_{t\in T} \bigg[ \bigvee\limits_{p\in{}^\bullet t} B(p) \implies \bigvee\limits_{p\in t^\bullet} B(p) \bigg]
+    \end{equation}
+    \item Marking $m$ marks a trap: 
+    \begin{equation}
+            mark(m,B) ::= \bigvee\limits_{p\in P} B(p)\land (m(p) >0)
+    \end{equation}
+    \item Imposing the constraint that all reachable markings also mark the trap for all traps
+            \begin{equation}
+              \forall B: trap(B) \land mark(m_0,B) \implies mark(M,B)
+            \end{equation}
+  \end{itemize}
+- Enumerates over all subsets of places, ensures a trap which is marked by initial and current marking.
+\end{frame}
+% \begin{frame}{Using Traps as Refinement}
+
+% \end{frame}
+\subsection{Safety by Refinement}
+\begin{frame}{Using Traps for refinement: SafetyByRefinement}
+  
+  \begin{itemize}
+  \item<1-> {
+  Recall: Violation of Mutual exclusion of lamport's algo is satisfiable $\mathcal{C}(P,T,F,m_0)\land p3 \geq 1 \land q5 \geq 1 $ 
+  with $p3=bit1=q5=1$ with safety.
+    %First item.
+    %\pause % The slide will pause after showing the first item
   }
-  \item {   
-    Second item.
+  \item<2-> {   
+    Generating all trap definition encodings from $(1)$ we get(3 for proc 1 and 6 for proc2):
+  \begin{center}
+    \begin{tabular}{c c}
+      {$p1 \vee notbit1 \implies p2 \vee bit1$} & {$q1 \vee notbit2 \implies q2$}\\
+      %$p2 \vee notbit2 \implies p3 \vee notbit2$ & {$q2 \vee bit1 \implies q3 \vee bit1$}\\
+     % $p3 \vee bit1 \implies p1 \vee notbit1$  & {$q3 \implies q4 \vee notbit2$}\\
+     % {} & {$q4\vee notbit1 \implies q1 \vee notbit1$} \\
+     % {} &{$q2 \vee notbit1 \implies q5\vee notbit1$} \\
+     % {} &{$q5 \implies q1 \vee notbit2$}
+    \end{tabular} 
+  \end{center}
+
   }
   % You can also specify when the content should appear
   % by using <n->:
   \item<3-> {
-    Third item.
+    Find a trap from above set that violates $(3)$ for the specific counterexample $m$.\\
+    $trap(B) \land mark(m_0,B) \implies mark(M,B)$\\
+    \uncover<4->{For a specific $m$ this is a pure boolean satisfiabiality problem. 
+    $p1 \vee q1\vee notbit1\vee notbit2$ and $\neg p3 \land \neg q5\land\neg bit1$}
+
   }
-  \item<4-> {
-    Fourth item.
-  }
+  \item<5-> {The trap set \{$p2,notbit1,notbit2,q2,q3$\} satisfies above constraints\\ hence we add
+    $p2+q2+q3+notbit1+notbit2 \geq 1$ to original Safety constraint set and repeat.}
+ 
   % or you can use the \uncover command to reveal general
   % content (not just \items):
-  \item<5-> {
-    Fifth item. \uncover<6->{Extra text in the fifth item.}
-  }
+  % \item<5-> {
+  %   Fifth item. \uncover<6->{Extra text in the fifth item.}
+  % }
   \end{itemize}
 \end{frame}
 
-\section{Second Main Section}
+\subsection{Invariant generation for constraint minimization}
 
-\subsection{Another Subsection}
+\begin{frame}{Invariants from Constraints}
+\begin{itemize}
+  %\item \textbf{Motivation:} Yet another invariant generatio
+  \item \textbf{Idea:} If SafetyByRefinement can prove N satisfies $\varphi$, then we can construct a linear inductive invariant that contains $m_0$ and
+  does not intesect $\neg\varphi$
+  \item \textbf{Method:} 
+  \begin{itemize}
+    \item We construct a set of inductive invariants from incidence matrix(C) and trap eqns.
+    \item Add them to original marking constraints and solve for a single run.
+  \end{itemize}
+\end{itemize}
+Consider the system S:
 
-\begin{frame}{Blocks}
-\begin{block}{Block Title}
-You can also highlight sections of your presentation in a block, with it's own title
+\begin{equation}
+\mathcal{C}(P,T,F,m_0) \:\: marking\, constraints 
+\end{equation}
+\begin{equation}
+\neg\varphi :: AM \geq b \:\: negation\,of\,property (b\,is\,kx1)
+\end{equation}
+\begin{equation}
+DM \geq 1 \:\:     Trap\,constraints(D\,is\,lx|P|)
+\end{equation}
+
+\end{frame}
+
+
+\begin{frame}{InvariantByRefinement}
+\begin{Theorem}
+  The primal $S$ system is unsat over rationals iff $S\textprime$ is sat over rational numbers, $S\textprime$ is given by:
+
+\begin{equation}
+  \lambda C \leq 0   \: inductivity\,constraint\,,\lambda\,is\,1x|P|
+\end{equation}
+\begin{equation}
+    \lambda m_0 < Y_1b+Y_21 \: safety\,constraint
+    \end{equation}
+  \begin{equation}
+  \lambda \geq Y_1A + Y_2D \: property\,constraint
+  \end{equation}
+  \begin{equation}
+  Y_1,Y_2\geq 0 \: Y_1\,is1xk, Y_2\,is\,1xl
+  \end{equation}
+  
+\end{Theorem}
+\begin{block}{Inductive Invariant}
+  $I(M)::= DM\geq 1 \land \lambda M \leq \lambda m_0$
 \end{block}
-\begin{theorem}
-There are separate environments for theorems, examples, definitions and proofs.
-\end{theorem}
+New variables for SMT solver: k+l+|P| in $Y_1, Y_2, \lambda$
+\end{frame}
+
+\begin{frame}{InvariantByRefinement in action}
+  \textbf{Final Trick}:
+  When $\lambda$ has fewer non-zero places the invariants are shorter. Hence we add a constraint that there are atmost K non-zero places in $\lambda$ to speed-up the search.
 \begin{example}
-Here is an example of an example block.
+For the same mutual exclusion example with trap constraint  $p2+q2+q3+notbit1+notbit2 \geq 1$  by solving the system of equations of $S\textprime$
+we get \\
+$I(M)::=(p2+q2+q3+notbit1+notbit2\geq1) \land (p1+2p2+2p3+notbit1+notbit2+q2+q3+q5\leq3)$.\\
+Adding the constraint that atmost 7 non-zero places in $\lambda $ we get \\
+$I\textprime(M)::=(p2+q2+q3+notbit1+notbit2\geq1) \land (p2+p3+notbit1+q2+q3+q5 \leq 2)$
+
 \end{example}
 \end{frame}
 
-% Placing a * after \section means it will not show in the
-% outline or table of contents.
-\section*{Summary}
 
-\begin{frame}{Summary}
-  \begin{itemize}
-  \item
-    The \alert{first main message} of your talk in one or two lines.
-  \item
-    The \alert{second main message} of your talk in one or two lines.
-  \item
-    Perhaps a \alert{third message}, but not more than that.
-  \end{itemize}
+% \begin{frame}{Blocks}
+% \begin{block}{Block Title}
+% You can also highlight sections of your presentation in a block, with it's own title
+% \end{block}
+% \begin{theorem}
+% There are separate environments for theorems, examples, definitions and proofs.
+% \end{theorem}
+% \begin{example}
+% Here is an example of an example block.
+% \end{example}
+% \end{frame}
+
+% % Placing a * after \section means it will not show in the
+% % outline or table of contents.
+% \section*{Summary}
+
+% \begin{frame}{Summary}
+%   \begin{itemize}
+%   \item
+%     The \alert{first main message} of your talk in one or two lines.
+%   \item
+%     The \alert{second main message} of your talk in one or two lines.
+%   \item
+%     Perhaps a \alert{third message}, but not more than that.
+%   \end{itemize}
   
+%   \begin{itemize}
+%   \item
+%     Outlook
+%     \begin{itemize}
+%     \item
+%       Something you haven't solved.
+%     \item
+%       Something else you haven't solved.
+%     \end{itemize}
+%   \end{itemize}
+% \end{frame}
+
+\begin{frame}{Backup}
   \begin{itemize}
-  \item
-    Outlook
-    \begin{itemize}
-    \item
-      Something you haven't solved.
-    \item
-      Something else you haven't solved.
-    \end{itemize}
-  \end{itemize}
+    \item{ \begin{center}
+    \begin{tabular}{c c}
+      {$p1 \vee notbit1 \implies p2 \vee bit1$} & {$q1 \vee notbit2 \implies q2$}\\
+     $p2 \vee notbit2 \implies p3 \vee notbit2$ & {$q2 \vee bit1 \implies q3 \vee bit1$}\\
+      $p3 \vee bit1 \implies p1 \vee notbit1$  & {$q3 \implies q4 \vee notbit2$}\\
+      {} & {$q4\vee notbit1 \implies q1 \vee notbit1$} \\
+      {} &{$q2 \vee notbit1 \implies q5\vee notbit1$} \\
+      {} &{$q5 \implies q1 \vee notbit2$}
+    \end{tabular} 
+  \end{center}}
+\end{itemize}
 \end{frame}
-
-
 
 % All of the following is optional and typically not needed. 
-\appendix
-\section<presentation>*{\appendixname}
-\subsection<presentation>*{For Further Reading}
+% \appendix
+% \section<presentation>*{\appendixname}
+% \subsection<presentation>*{For Further Reading}
 
-\begin{frame}[allowframebreaks]
-  \frametitle<presentation>{For Further Reading}
+% \begin{frame}[allowframebreaks]
+%   \frametitle<presentation>{For Further Reading}
     
-  \begin{thebibliography}{10}
+%   \begin{thebibliography}{10}
     
-  \beamertemplatebookbibitems
-  % Start with overview books.
+%   \beamertemplatebookbibitems
+%   % Start with overview books.
 
-  \bibitem{Author1990}
-    A.~Author.
-    \newblock {\em Handbook of Everything}.
-    \newblock Some Press, 1990.
+%   \bibitem{Author1990}
+%     A.~Author.
+%     \newblock {\em Handbook of Everything}.
+%     \newblock Some Press, 1990.
  
     
-  \beamertemplatearticlebibitems
-  % Followed by interesting articles. Keep the list short. 
+%   \beamertemplatearticlebibitems
+%   % Followed by interesting articles. Keep the list short. 
 
-  \bibitem{Someone2000}
-    S.~Someone.
-    \newblock On this and that.
-    \newblock {\em Journal of This and That}, 2(1):50--100,
-    2000.
-  \end{thebibliography}
-\end{frame}
+%   \bibitem{Someone2000}
+%     S.~Someone.
+%     \newblock On this and that.
+%     \newblock {\em Journal of This and That}, 2(1):50--100,
+%     2000.
+%   \end{thebibliography}
+% \end{frame}
 
 \end{document}
 
