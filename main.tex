@@ -131,7 +131,7 @@
 \begin{frame}{Petri Nets}
   Recall:
   \begin{itemize}
-  \item \textbf{Petri Nets} is a tuple \textit{N = (P,T,F,$m_0$)}
+  \item A \textbf{Petri Net} is a tuple \textit{N = (P,T,F,$m_0$)}
   
 \tikzset{every picture/.style={line width=0.5pt}} %set default line width to 0.75pt        
 
@@ -963,17 +963,21 @@
 \end{frame}
 
 
-\begin{frame}{Occurence Sequences and Properties}
+\begin{frame}{Firing Sequences and Properties}
 \begin{tabular}{c c}{
   \raisebox{0.5cm}{
 \begin{minipage}{0.5\textwidth}
   \begin{itemize}
-    \item Occurence Sequence $\sigma = t_1t_2....t_r$ 
+    \item Firing Sequence $\sigma = t_1t_2....t_r$ 
     
     \item \textbf{Property $\varphi$} 
     \begin{itemize}
       \item linear arithmetic constraints over free variables \textit{P}.\\
-           Eg: $m(p1) \geq 1 \land m(p2) < 2$
+           Eg: \begin{itemize}
+            \item $m(p1) \geq 1 \land m(p2) < 2$
+            \item termination : $true$
+            \item Coverability: $m(p1) \geq 2 \land m(p2) \geq 1 ...$
+           \end{itemize}
       \item $N := \varphi\,iff\,Reach(m_0):=\varphi $
     \end{itemize}
     \item Inductive Invariant
@@ -1437,7 +1441,7 @@ $}} &\raisebox{2cm}{{ $X =
   \item<1-> {
   CE for Mutex : \textcolor{red}{$\mathcal{C}(P,T,F,m_0)\land p3 \geq 1 \land q5 \geq 1 $} 
   \begin{center}
-  marking by \textcolor{blue}{$p3=1,bit1=1,q5=1$}
+  marked by \textcolor{blue}{$p3=1,bit1=1,q5=1$}
   \end{center}
     %First item.
     %\pause % The slide will pause after showing the first item
@@ -1460,7 +1464,7 @@ Generate trap encodings B from $(1)$:
   % You can also specify when the content should appear
   % by using <n->:
   \item<3-> {
-    Find a trap that doesn't reach $m$.\\
+    Find a trap that doesn't reach $m$, else return failure\\
     \begin{center}
     \textcolor{blue}{$trap(B) \land mark(m_0,B) \land \neg mark(M,B)$}\\
     Trap B:\textcolor{purple}{\{$p2,notbit1,notbit2,q2,q3$\}}
